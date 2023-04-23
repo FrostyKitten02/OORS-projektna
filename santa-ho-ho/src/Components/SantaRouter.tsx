@@ -22,6 +22,10 @@ const router = createBrowserRouter(
                 },
                 {
                     path: basePath + "children/:id",
+                    element: <ChildPage overview={true}/>
+                },
+                {
+                    path: basePath + "children/edit/:id",
                     element: <ChildPage />
                 },
                 {
