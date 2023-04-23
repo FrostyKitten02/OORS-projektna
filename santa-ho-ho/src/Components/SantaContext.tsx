@@ -22,7 +22,7 @@ export interface Child {
 export interface Present {
     id?: string;
     name?: string;
-
+    forChildId?: string;//id of child, if set present is reserved for that child and no longer on avalible list, it's moved to delivery list
 }
 
 export interface SantaBaseContext {
