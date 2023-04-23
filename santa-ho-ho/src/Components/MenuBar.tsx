@@ -1,6 +1,7 @@
-import {List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
+import {List, ListItem, ListItemButton, ListItemIcon} from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
+import RedeemIcon from '@mui/icons-material/Redeem';
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from "react-router";
 
@@ -24,6 +25,7 @@ export default function MenuBar() {
         <List sx={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
             <NavButton navigateTo={"/"} icon={<HomeIcon />} />
             <NavButton navigateTo={"/children"} icon={<PersonIcon />} />
+            <NavButton navigateTo={"/presents"} icon={<RedeemIcon />} />
         </List>
     )
 }

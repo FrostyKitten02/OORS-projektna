@@ -1,27 +1,31 @@
-import {Child, SantaBaseContext, santaContext} from "../Components/SantaContext";
-import {useContext, useState} from "react";
-import { Box, Button } from "@mui/material";
-import ChildCard from "../Components/ChildCard";
-import {v4 as uuid} from 'uuid';
+import {Box, Button} from "@mui/material";
 import SearchBar from "../Components/SearchBar";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
+import {v4 as uuid} from "uuid";
+import {Present, SantaBaseContext, santaContext} from "../Components/SantaContext";
+import {useContext, useState} from "react";
+import PresentsCard from "../Components/PresentsCard";
 import {useNavigate} from "react-router";
 
-export default function ChildrenPage() {
-    const context = useContext<SantaBaseContext>(santaContext);
+
+
+
+
+export default function PresentsPage() {
     const navigate = useNavigate();
-    const [children, setChildren] = useState<Child[] | undefined>(undefined);
+    const context = useContext<SantaBaseContext>(santaContext);
+    const [presents, setPresents] = useState<Present[] | undefined>(undefined);
 
-    if (!children) {
-        setChildren(context.searchChildren());
+
+    if (presents === undefined) {
+        setPresents(context.searchPresents());
     }
-
     const handleSearch = (searchBy: string) => {
-        setChildren(context.searchChildren(searchBy));
+        setPresents(context.searchPresents(searchBy));
     }
 
-    const handleAddClicked = () =>{
-        navigate("/children/add");
+    const handleAddClicked = () => {
+        navigate("/presents/add");
     }
 
     return (
@@ -36,7 +40,7 @@ export default function ChildrenPage() {
             </Box>
             <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                 <Box sx={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: "20px", width: "1600px"}}>
-                    {children?.map((child) => {return <ChildCard key={uuid()} child={child} />})}
+                    {presents?.map((present) => {return <PresentsCard key={uuid()} present={present} />})}
                 </Box>
             </Box>
         </Box>

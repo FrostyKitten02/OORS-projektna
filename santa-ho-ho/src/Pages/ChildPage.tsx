@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router";
 import {Box, Button, TextField} from "@mui/material";
-import {Address, Child, SantaBaseContext, santaContext} from "../Components/SantaContext";
+import {Child, SantaBaseContext, santaContext} from "../Components/SantaContext";
 import {ChangeEvent, useContext, useState} from "react";
 
 export default function ChildPage({overview}:{overview?: boolean}) {
@@ -13,7 +13,6 @@ export default function ChildPage({overview}:{overview?: boolean}) {
         const childFromId: Child | undefined = context.getChildById(id);
         if (childFromId !== undefined) {
             setChild(childFromId);
-            console.log(childFromId)
         } else {
             context.clearAlerts();
             navigate("/");

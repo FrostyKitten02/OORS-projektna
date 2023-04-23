@@ -22,15 +22,21 @@ export interface Child {
 export interface Present {
     id?: string;
     name?: string;
+    description?: string;
+    maxStarsDiff?: number;
+    minAge?: number;
+    maxAge?: number;
+    imageLink?: string;
     forChildId?: string;//id of child, if set present is reserved for that child and no longer on avalible list, it's moved to delivery list
 }
 
 export interface SantaBaseContext {
     searchChildren: (name?: string) => Child[];
-    searchPresents: (name: string) => Present[];
+    searchPresents: (name?: string, onlyAvailable?: boolean) => Present[];
     saveChild: (child: Child) => void;
     getChildById: (id: string) => Child | undefined;
-    addPresent: (present: Present) => void;
+    savePresent: (present: Present) => void;
+    getPresentById: (id: string) => Present | undefined;
     showErrorMessage: (message: string) => void;
     showSuccessMessage: (message: string) => void;
     clearAlerts: () => void;
@@ -159,19 +165,42 @@ const initalChildren = [
     },
 ];
 
+const initalPresents = [
+    {
+        id: "asdasd",
+        name: "Lego",
+        description: "Lego set",
+        maxStarsDiff: 2,
+        minAge: 5,
+        maxAge: 10,
+        imageLink: "https://www.lego.com/cdn/cs/set/assets/blt8fa82af2949ffc86/31139.png",
+    }
+]
 
-//TODO implement functions!
 const initalState: ISantaContext = {
     children: initalChildren,
-    presents: [],
+    presents: initalPresents,
     searchChildren: function(name?: string): Child[] {
         if (name === undefined) {
             return this.children;
         }
-       return this.children.filter(child => child.firstname?.includes(name) || child.lastname?.includes(name));
+       return this.children.filter(child => child.firstname?.toLowerCase().includes(name.toLowerCase()) || child.lastname?.toLowerCase().includes(name.toLowerCase()));
     },
-    searchPresents: function (name: string) {
-        return this.presents.filter(present => present.name?.includes(name));
+    searchPresents: function (name?: string, onlyAvailable?: boolean): Present[] {
+        if (name === undefined || name === "") {
+            if (onlyAvailable) {
+                return this.presents.filter(present => present.forChildId === undefined);
+            }
+            return this.presents;
+        }
+
+        return this.presents.filter(present => {
+            const nameBool = present.name?.toLowerCase().includes(name.toLowerCase()) || present.description?.toLowerCase().includes(name.toLowerCase());
+            if (onlyAvailable !== undefined) {
+                return nameBool && present.forChildId === undefined;
+            }
+            return nameBool;
+        });
     },
     saveChild: function (child: Child) {
         if (child.id === undefined) {
@@ -193,7 +222,26 @@ const initalState: ISantaContext = {
     getChildById: function (id: string): Child | undefined {
       return this.children.find(child => child.id === id);
     },
-    addPresent: (present: Present) => {},
+    savePresent: function(present: Present) {
+        if (present.id == null) {
+            present.id = uuid();
+            this.presents.push(present);
+        } else {
+            const index = this.presents.findIndex(p => p.id === present.id);
+            if (index !== -1) {
+                this.presents[index] = present;
+            } else {
+                console.warn("Present not found while saving!")
+            }
+        }
+
+        this.setCtx?.(prevstate => {
+            return {...prevstate};
+        });
+    },
+    getPresentById: function (id: string): Present | undefined {
+        return this.presents.find(present => present.id === id);
+    },
     showErrorMessage: function (message: string, time?: number) {
         toast.error(message, {
             position: toast.POSITION.TOP_RIGHT,
