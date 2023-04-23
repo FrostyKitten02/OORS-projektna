@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router";
 import {Box, Button, TextField} from "@mui/material";
-import {Child, SantaBaseContext, santaContext} from "../Components/SantaContext";
+import {Address, Child, SantaBaseContext, santaContext} from "../Components/SantaContext";
 import {ChangeEvent, useContext, useState} from "react";
 
 export default function ChildPage({overview}:{overview?: boolean}) {
@@ -13,6 +13,7 @@ export default function ChildPage({overview}:{overview?: boolean}) {
         const childFromId: Child | undefined = context.getChildById(id);
         if (childFromId !== undefined) {
             setChild(childFromId);
+            console.log(childFromId)
         } else {
             context.clearAlerts();
             navigate("/");
@@ -24,16 +25,24 @@ export default function ChildPage({overview}:{overview?: boolean}) {
         if (overview) {
             return;
         }
-        setChild(prevState => ({...prevState, [event.target.name]: event.target.value}));
+        setChild(prevState => {
+            if (event.target.type == "number") {
+                return {...prevState, [event.target.name]: parseInt(event.target.value)};
+            }
+            return {...prevState, [event.target.name]: event.target.value};
+        });
     };
 
     const handleChangeAddress = (event: ChangeEvent<HTMLInputElement>) => {
-        if (!overview) {
+        if (overview) {
             return;
         }
         setChild(prevState => {
             if (prevState.address === undefined) {
                 prevState.address = {};
+            }
+            if (event.target.type == "number") {
+                return {...prevState, address: {...prevState.address, [event.target.name]: parseInt(event.target.value)}};
             }
             return {...prevState, address: {...prevState.address, [event.target.name]: event.target.value}};
         });
