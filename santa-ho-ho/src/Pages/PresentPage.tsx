@@ -1,4 +1,4 @@
-import {Box, Button, TextField} from "@mui/material";
+import {Box, Button, TextField, Typography} from "@mui/material";
 import {ChangeEvent, useContext, useState} from "react";
 import {Present, SantaBaseContext, santaContext} from "../Components/SantaContext";
 import {useNavigate, useParams} from "react-router";
@@ -43,25 +43,30 @@ export default function PresentPage({overview}:{overview?: boolean}) {
     }
 
     return (
-        <Box sx={{display: "flex", flexDirection: "column", gap: "10px", maxWidth: 600}}>
-            <Box sx={{display: "flex", flexDirection: "column", gap: "10px"}}>
-                <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px"}}>
-                    <TextField fullWidth name="minAge" label="Minimalna starost" variant="filled" type="number" onChange={handleChange} value={present?.minAge??0} disabled={overview}/>
-                    <TextField fullWidth name="maxAge" label="Maksimalna starost" variant="filled" type="number" onChange={handleChange} value={present?.maxAge??0} disabled={overview} />
-                </Box>
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <Typography variant="h3" sx={{paddingBottom: "20px"}}>
+                Darilo
+            </Typography>
+            <Box sx={{display: "flex", flexDirection: "column", gap: "10px", maxWidth: 600}}>
+                <Box sx={{display: "flex", flexDirection: "column", gap: "10px"}}>
+                    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px"}}>
+                        <TextField fullWidth name="minAge" label="Minimalna starost" variant="filled" type="number" onChange={handleChange} value={present?.minAge??0} disabled={overview}/>
+                        <TextField fullWidth name="maxAge" label="Maksimalna starost" variant="filled" type="number" onChange={handleChange} value={present?.maxAge??0} disabled={overview} />
+                    </Box>
 
-                <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px"}}>
-                    <TextField fullWidth name="name" label="Naziv" variant="filled" onChange={handleChange} value={present?.name??""} disabled={overview} />
-                    <TextField fullWidth name="maxStarsDiff" label="Maksimalna razlika zvezdic" variant="filled" type="number" onChange={handleChange} value={present?.maxStarsDiff??0} disabled={overview} />
-                </Box>
+                    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px"}}>
+                        <TextField fullWidth name="name" label="Naziv" variant="filled" onChange={handleChange} value={present?.name??""} disabled={overview} />
+                        <TextField fullWidth name="maxStarsDiff" label="Maksimalna razlika zvezdic" variant="filled" type="number" onChange={handleChange} value={present?.maxStarsDiff??0} disabled={overview} />
+                    </Box>
 
-                <Box sx={{display: "flex", flexDirection: "column", gap: "10px"}} >
-                    <TextField fullWidth name="imageLink" label="Link do slike" variant="filled" onChange={handleChange} value={present?.imageLink??""} disabled={overview} />
-                    <TextField fullWidth name="description" label="Opis" variant="filled" onChange={handleChange} value={present?.description??""} disabled={overview} multiline minRows={3} />
-                </Box>
+                    <Box sx={{display: "flex", flexDirection: "column", gap: "10px"}} >
+                        <TextField fullWidth name="imageLink" label="Link do slike" variant="filled" onChange={handleChange} value={present?.imageLink??""} disabled={overview} />
+                        <TextField fullWidth name="description" label="Opis" variant="filled" onChange={handleChange} value={present?.description??""} disabled={overview} multiline minRows={3} />
+                    </Box>
 
-                <Box>
-                    {!overview?<Button variant="contained" onClick={handleSubmit}>Shrani</Button>:null}
+                    <Box>
+                        {!overview?<Button variant="contained" onClick={handleSubmit}>Shrani</Button>:null}
+                    </Box>
                 </Box>
             </Box>
         </Box>
