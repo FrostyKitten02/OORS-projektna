@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router";
-import {Box, Button, TextField} from "@mui/material";
+import {Box, Button, TextField, Typography} from "@mui/material";
 import {Child, Present, SantaBaseContext, santaContext} from "../Components/SantaContext";
 import {ChangeEvent, useContext, useEffect, useState} from "react";
 import PresentsCard from "../Components/PresentsCard";
@@ -64,7 +64,10 @@ export default function ChildPage({overview}:{overview?: boolean}) {
     }
 
     return (
-        <Box>
+        <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+            <Typography variant="h3" sx={{paddingBottom: "20px"}}>
+                Otrok
+            </Typography>
             <Box sx={{display: "flex", flexDirection: "column", gap: "10px", maxWidth: 600}}>
                 {/*Basic info*/}
                 <Box sx={{display: "flex", flexDirection: "column", gap: "10px"}}>
@@ -98,7 +101,7 @@ export default function ChildPage({overview}:{overview?: boolean}) {
             </Box>
             {overview?
                 <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                    <Box sx={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: "20px", width: "1600px"}}>
+                    <Box sx={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: "20px", width: "1600px", paddingTop: "30px"}}>
                         {presents?.map((present) => {return <PresentsCard key={uuid()} present={present} childId={child.id}/>})}
                     </Box>
                 </Box>:null}
