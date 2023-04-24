@@ -32,7 +32,7 @@ export interface Present {
 
 export interface SantaBaseContext {
     searchChildren: (name?: string) => Child[];
-    searchPresents: (name?: string, onlyAvailable?: boolean) => Present[];
+    searchPresents: (name?: string, onlyAvailable?: boolean, maxStarDiff?: number) => Present[];
     saveChild: (child: Child) => void;
     getChildById: (id: string) => Child | undefined;
     savePresent: (present: Present) => void;
@@ -186,20 +186,32 @@ const initalState: ISantaContext = {
         }
        return this.children.filter(child => child.firstname?.toLowerCase().includes(name.toLowerCase()) || child.lastname?.toLowerCase().includes(name.toLowerCase()));
     },
-    searchPresents: function (name?: string, onlyAvailable?: boolean): Present[] {
+    searchPresents: function (name?: string, onlyAvailable?: boolean, maxStarDIff?: number): Present[] {
+        //TODO: combine into onee filter!!!
         if (name === undefined || name === "") {
-            if (onlyAvailable) {
-                return this.presents.filter(present => present.forChildId === undefined);
-            }
-            return this.presents;
+            return this.presents.filter(present=>{
+                const maxStarsDiffBool: boolean = maxStarDIff===undefined?true:(present.maxStarsDiff??0)<=(maxStarDIff??0);
+                if (onlyAvailable !== undefined) {
+                    if (onlyAvailable) {
+                        return present.forChildId === undefined && maxStarsDiffBool;
+                    }
+                    return present.forChildId !== undefined && maxStarsDiffBool;
+                }
+                return maxStarsDiffBool;
+            })
         }
 
         return this.presents.filter(present => {
             const nameBool = present.name?.toLowerCase().includes(name.toLowerCase()) || present.description?.toLowerCase().includes(name.toLowerCase());
+            const maxStarDiffBool = maxStarDIff===undefined?true:(present.maxStarsDiff??0)<=(maxStarDIff??0);
+            console.log(nameBool, maxStarDiffBool)
             if (onlyAvailable !== undefined) {
-                return nameBool && present.forChildId === undefined;
+                if (onlyAvailable) {
+                    return nameBool && present.forChildId === undefined && maxStarDiffBool;
+                }
+                return nameBool && present.forChildId !== undefined && maxStarDiffBool;
             }
-            return nameBool;
+            return nameBool && maxStarDiffBool;
         });
     },
     saveChild: function (child: Child) {
@@ -268,7 +280,7 @@ export default function SantaContext({children}:{children: ReactNode}) {
             return;
         }
         setCtx({...ctx, setCtx: setCtx});
-    });
+    }, [ctx, setCtx]);
 
 
     return (

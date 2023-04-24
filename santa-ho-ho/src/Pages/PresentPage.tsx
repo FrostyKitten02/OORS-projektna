@@ -39,7 +39,6 @@ export default function PresentPage({overview}:{overview?: boolean}) {
         if (overview) {
             return;
         }
-        console.log(present);
         context.savePresent(present);
     }
 
