@@ -40,6 +40,7 @@ export default function PresentPage({overview}:{overview?: boolean}) {
             return;
         }
         context.savePresent(present);
+        navigate("/presents/" + present.id);
     }
 
     return (
