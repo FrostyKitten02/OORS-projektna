@@ -174,6 +174,33 @@ const initalPresents = [
         minAge: 5,
         maxAge: 10,
         imageLink: "https://www.lego.com/cdn/cs/set/assets/blt8fa82af2949ffc86/31139.png",
+    },
+    {
+        id: "a",
+        name: "Barbie",
+        description: "Doll",
+        maxStarsDiff: 3,
+        minAge: 5,
+        maxAge: 10,
+        imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh00ObhKVXq0u8pwZcBJT9VG083sHO2iP5Zw&usqp=CAU",
+    },
+    {
+        id: "b",
+        name: "Dinosaur",
+        description: "T-rex",
+        maxStarsDiff: 5,
+        minAge: 5,
+        maxAge: 10,
+        imageLink: "https://www.exoprimal.com/assets/images/dinosurvival/dinosaurs_img-trex.png",
+    },
+    {
+        id: "c",
+        name: "Dinosaur",
+        description: "Therizinosaurus",
+        maxStarsDiff: 8,
+        minAge: 1,
+        maxAge: 5,
+        imageLink: "https://dinotoyblog.com/wp-content/uploads/2022/05/Mattel_Therizinosaurus_1.jpg",
     }
 ]
 
