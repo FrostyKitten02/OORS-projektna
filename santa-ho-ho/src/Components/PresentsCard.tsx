@@ -1,13 +1,14 @@
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import {Present} from "./SantaContext";
+import {Present, SantaBaseContext, santaContext} from "./SantaContext";
 import {useNavigate} from "react-router";
+import {useContext} from "react";
 
 
-export default function PresentsCard({present}:{present: Present}) {
+export default function PresentsCard({present, childId}:{present: Present, childId?: string}) {
     const navigate = useNavigate();
-
+    const context = useContext<SantaBaseContext>(santaContext);
 
     const handleDetailsClick = () => {
         navigate("/presents/" + present.id);
@@ -17,6 +18,14 @@ export default function PresentsCard({present}:{present: Present}) {
         navigate("/presents/edit/" + present.id);
     }
 
+    const handleAssignClick = () => {
+        if (!childId) {
+            return;
+        }
+
+        present.forChildId = childId;
+        context.savePresent(present);
+    }
     return (
         <Card sx={{width: "320px", height: "400px"}}>
             <CardContent>
@@ -40,6 +49,7 @@ export default function PresentsCard({present}:{present: Present}) {
                 <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-evenly"}}>
                     <Button size="small" variant="contained" onClick={handleDetailsClick}>Podrobnosti</Button>
                     <Button size="small" variant="contained" onClick={handelEditClick}>Uredi</Button>
+                    {childId?<Button size="small" variant="contained" onClick={handleAssignClick}>Dodeli</Button>:null}
                 </Box>
             </CardActions>
         </Card>

@@ -218,9 +218,8 @@ const initalState: ISantaContext = {
         //TODO: simplyfly ifs for onlyavaliable, make it like ageBool and maxStarsBool!!
         if (name === undefined || name === "") {
             return this.presents.filter(present=>{
-                const maxStarsDiffBool: boolean = maxStarDIff===undefined?true:(present.maxStarsDiff??0)<=(maxStarDIff??0);
+                const maxStarsDiffBool: boolean = maxStarDIff===undefined?true:(present.maxStarsDiff??0)<=maxStarDIff;
                 const ageBool: boolean = age===undefined?true:((present.maxAge??(age+1)) >= (age) && (present.minAge??0) <= (age));
-                console.log(ageBool)
                 if (onlyAvailable !== undefined) {
                     if (onlyAvailable) {
                         return present.forChildId === undefined && maxStarsDiffBool && ageBool;

@@ -53,4 +53,14 @@ export default class ChildUtil {
         return child;
     }
 
+    static getChildStarsDiff(child: Child): number {
+        if (child.blackStars !== undefined && child.stars === undefined) {
+            return child.blackStars;
+        } else if (child.blackStars !== undefined && child.stars !== undefined && (child.blackStars < child.stars)) {
+            return child.stars - child.blackStars;
+        }
+
+        return 0;
+    }
+
 }
