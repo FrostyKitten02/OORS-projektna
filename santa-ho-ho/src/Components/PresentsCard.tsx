@@ -26,8 +26,18 @@ export default function PresentsCard({present, childId}:{present: Present, child
         present.forChildId = childId;
         context.savePresent(present);
     }
+
+    const handelUnassignClick = () => {
+        if (!childId) {
+            return;
+        }
+
+        present.forChildId = undefined;
+        context.savePresent(present);
+    }
+
     return (
-        <Card sx={{width: "320px", height: "400px"}}>
+        <Card sx={{width: "320px", height: "400px", background: present.forChildId?"#a8a8a8":""}}>
             <CardContent>
                 <CardMedia
                     component="img"
@@ -49,7 +59,8 @@ export default function PresentsCard({present, childId}:{present: Present, child
                 <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-evenly"}}>
                     <Button size="small" variant="contained" onClick={handleDetailsClick}>Podrobnosti</Button>
                     <Button size="small" variant="contained" onClick={handelEditClick}>Uredi</Button>
-                    {childId?<Button size="small" variant="contained" onClick={handleAssignClick}>Dodeli</Button>:null}
+                    {childId&&present.forChildId===undefined?<Button size="small" variant="contained" onClick={handleAssignClick}>Dodeli</Button>:null}
+                    {present.forChildId&&childId?<Button size="small" variant="contained" sx={{background: "red", '&:hover': {backgroundColor: "red"}}} onClick={handelUnassignClick}>Odstrani</Button>:null}
                 </Box>
             </CardActions>
         </Card>

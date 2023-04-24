@@ -14,9 +14,7 @@ export default function ChildPage({overview}:{overview?: boolean}) {
     const [presents, setPresents] = useState<Present[]>([]);
 
     useEffect(()=>{
-        const presents = context.searchPresents(undefined, true, ChildUtil.getChildStarsDiff(child), undefined);
-        console.log(presents);
-        setPresents(presents);
+        setPresents(context.searchPresents(undefined, true, ChildUtil.getChildStarsDiff(child), undefined, child.id));
     }, [child, context])
 
     if (id !== undefined && child.id === undefined) {

@@ -32,7 +32,7 @@ export interface Present {
 
 export interface SantaBaseContext {
     searchChildren: (name?: string) => Child[];
-    searchPresents: (name?: string, onlyAvailable?: boolean, maxStarDiff?: number, age?: number) => Present[];
+    searchPresents: (name?: string, onlyAvailable?: boolean, maxStarDiff?: number, age?: number, orFromChildId?: string) => Present[];
     saveChild: (child: Child) => void;
     getChildById: (id: string) => Child | undefined;
     savePresent: (present: Present) => void;
@@ -213,20 +213,22 @@ const initalState: ISantaContext = {
         }
        return this.children.filter(child => child.firstname?.toLowerCase().includes(name.toLowerCase()) || child.lastname?.toLowerCase().includes(name.toLowerCase()));
     },
-    searchPresents: function (name?: string, onlyAvailable?: boolean, maxStarDIff?: number, age?: number): Present[] {
+    searchPresents: function (name?: string, onlyAvailable?: boolean, maxStarDIff?: number, age?: number, orFromChildId?: string): Present[] {
         //TODO: combine into one filter!!!
         //TODO: simplyfly ifs for onlyavaliable, make it like ageBool and maxStarsBool!!
         if (name === undefined || name === "") {
             return this.presents.filter(present=>{
                 const maxStarsDiffBool: boolean = maxStarDIff===undefined?true:(present.maxStarsDiff??0)<=maxStarDIff;
                 const ageBool: boolean = age===undefined?true:((present.maxAge??(age+1)) >= (age) && (present.minAge??0) <= (age));
+                const orFromChildIdBool: boolean = orFromChildId===undefined?false:present.forChildId===orFromChildId;
+
                 if (onlyAvailable !== undefined) {
                     if (onlyAvailable) {
-                        return present.forChildId === undefined && maxStarsDiffBool && ageBool;
+                        return (present.forChildId === undefined && maxStarsDiffBool && ageBool) || orFromChildIdBool;
                     }
-                    return present.forChildId !== undefined && maxStarsDiffBool && ageBool;
+                    return (present.forChildId !== undefined && maxStarsDiffBool && ageBool) || orFromChildIdBool;
                 }
-                return maxStarsDiffBool && ageBool;
+                return (maxStarsDiffBool && ageBool) || orFromChildIdBool
             })
         }
 
@@ -234,14 +236,15 @@ const initalState: ISantaContext = {
             const nameBool = present.name?.toLowerCase().includes(name.toLowerCase()) || present.description?.toLowerCase().includes(name.toLowerCase());
             const maxStarDiffBool = maxStarDIff===undefined?true:(present.maxStarsDiff??0)<=(maxStarDIff??0);
             const ageBool: boolean = age===undefined?true:((present.maxAge??(age+1)) >= (age) && (present.minAge??0) <= (age));
+            const orFromChildIdBool: boolean = orFromChildId===undefined?false:present.forChildId===orFromChildId;
 
             if (onlyAvailable !== undefined) {
                 if (onlyAvailable) {
-                    return nameBool && present.forChildId === undefined && maxStarDiffBool && ageBool;
+                    return (nameBool && present.forChildId === undefined && maxStarDiffBool && ageBool) || orFromChildIdBool;
                 }
-                return nameBool && present.forChildId !== undefined && maxStarDiffBool && ageBool;
+                return (nameBool && present.forChildId !== undefined && maxStarDiffBool && ageBool) || orFromChildIdBool
             }
-            return nameBool && maxStarDiffBool && ageBool;
+            return (nameBool && maxStarDiffBool && ageBool) || orFromChildIdBool;
         });
     },
     saveChild: function (child: Child) {
