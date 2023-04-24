@@ -11,7 +11,7 @@ export default function PresentPage({overview}:{overview?: boolean}) {
     const [present, setPresent] = useState<Present>({});
 
 
-    if (id != undefined && present.id == undefined) {
+    if (id !== undefined && present.id === undefined) {
         const presentById: Present | undefined = context.getPresentById(id);
         if (presentById !== undefined) {
             setPresent(presentById);

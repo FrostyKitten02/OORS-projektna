@@ -9,7 +9,7 @@ export default function ChildPage({overview}:{overview?: boolean}) {
     const navigate = useNavigate();
     const [child, setChild] = useState<Child>({});
 
-    if (id != undefined && child.id == undefined) {
+    if (id !== undefined && child.id === undefined) {
         const childFromId: Child | undefined = context.getChildById(id);
         if (childFromId !== undefined) {
             setChild(childFromId);
@@ -25,7 +25,7 @@ export default function ChildPage({overview}:{overview?: boolean}) {
             return;
         }
         setChild(prevState => {
-            if (event.target.type == "number") {
+            if (event.target.type === "number") {
                 return {...prevState, [event.target.name]: parseInt(event.target.value)};
             }
             return {...prevState, [event.target.name]: event.target.value};
@@ -40,7 +40,7 @@ export default function ChildPage({overview}:{overview?: boolean}) {
             if (prevState.address === undefined) {
                 prevState.address = {};
             }
-            if (event.target.type == "number") {
+            if (event.target.type === "number") {
                 return {...prevState, address: {...prevState.address, [event.target.name]: parseInt(event.target.value)}};
             }
             return {...prevState, address: {...prevState.address, [event.target.name]: event.target.value}};
